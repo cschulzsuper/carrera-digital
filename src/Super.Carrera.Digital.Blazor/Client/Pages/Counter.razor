@@ -1,0 +1,29 @@
+﻿@page "/counter"
+
+@inject ControlUnit ControlUnit;
+
+<PageTitle>Counter</PageTitle>
+
+<h1>Counter</h1>
+
+<p role="status">Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<button class="btn btn-primary" @onclick="StartAsync">Start</button>
+
+@code {
+    private int currentCount = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ControlUnit.ConnectAsync();
+    }
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+
+    private async Task StartAsync()
+        => await ControlUnit.StartAsync();
+}

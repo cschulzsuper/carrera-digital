@@ -1,13 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Super.Carrera.Digital.Contract
+namespace Super.Carrera.Digital
 {
-    internal interface IControlUnitAdapter
+    public interface IControlUnitAdapter
     {
+        Task ConnectAsync();
+
         Task SendAsync(byte[] startCommand);
+
+        void OnNotification(Action<byte[]> handler);
     }
 }

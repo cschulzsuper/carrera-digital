@@ -1,5 +1,6 @@
-﻿namespace Super.Carrera.Digital
+﻿namespace Super.Carrera.Digital.ProtocolObjects
 {
+    [ControlUnitNotification(0x3F, 0x3A)]
     public record ControlUnitStatus(
         int[] FuelLevels,
         int StartLight,
