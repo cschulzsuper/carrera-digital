@@ -52,20 +52,24 @@ namespace Super.Carrera.Digital
 
         private ControlUnitNotificationDelegates? FindNotificationDelegatesOrDefault(byte[] bytes)
         {
-            var twoByteIdentification =
-                (bytes[0] << 0) &
-                (bytes[1] << 8);
+            if (bytes.Length < 2)
+            {
+                return null;
+            }
 
-            var hasTwoByteIdentification = _notificationDelegatesMappings.TryGetValue(twoByteIdentification, out var notificationDelegates);
-            if (hasTwoByteIdentification)
+            var oneByteIdentification =
+                (bytes[0] << 0);
+
+            var hasOneByteIdentification = _notificationDelegatesMappings.TryGetValue(oneByteIdentification, out var notificationDelegates);
+            if (hasOneByteIdentification)
             {
                 return notificationDelegates;
             }
 
-            var oneByteIdentification = bytes[0] << 0;
+            var zeroByteIdentification = 0;
 
-            var hasOneByteIdentification = _notificationDelegatesMappings.TryGetValue(oneByteIdentification, out notificationDelegates);
-            if (hasOneByteIdentification)
+            var hasZeroByteIdentification = _notificationDelegatesMappings.TryGetValue(zeroByteIdentification, out notificationDelegates);
+            if (hasZeroByteIdentification)
             {
                 return notificationDelegates;
             }

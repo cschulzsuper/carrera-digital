@@ -16,15 +16,19 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await ControlUnit.ConnectAsync();
+        ControlUnit.Map<ControlUnitStatus>(_ => { return; });
+        ControlUnit.Map<ControlUnitTimer>(x => {
+            IncrementCount();
+        });
 
-        ControlUnit.Map<ControlUnitTimer>(x => currentCount = x.Timestamp);
+        await ControlUnit.ConnectAsync();
     }
 
 
     private void IncrementCount()
     {
         currentCount++;
+        StateHasChanged();
     }
 
     private async Task StartAsync()

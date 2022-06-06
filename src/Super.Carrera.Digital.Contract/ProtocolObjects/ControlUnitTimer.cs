@@ -1,6 +1,6 @@
 ﻿namespace Super.Carrera.Digital.ProtocolObjects
 {
-    [ControlUnitNotification(0x3F)]
+    [ControlUnitNotification]
     public record ControlUnitTimer(
         byte Controller,
         uint Timestamp,

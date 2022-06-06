@@ -11,10 +11,6 @@ namespace Super.Carrera.Digital
             Identification = identification.Length > 0
                 ? identification[0] << 0
                 : 0;
-
-            Identification &= identification.Length > 1
-                ? identification[1] << 8
-                : 0;
         }
     }
 }

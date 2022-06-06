@@ -21,15 +21,17 @@ namespace Super.Carrera.Digital.Blazm.Bluetooth
         public async Task ConnectAsync()
         {
             var requestDeviceQuery = new RequestDeviceQuery();
-            requestDeviceQuery.Filters.Add(
+            requestDeviceQuery.AcceptAllDevices = true;
+            requestDeviceQuery.OptionalServices.Add(_serviceId);
+            /*requestDeviceQuery.Filters.Add(
                 new Filter() 
                 { 
                     Services = { _serviceId } 
-                });
+                });*/
 
             _bluetoothDevice = await _bluetoothNavigator.RequestDeviceAsync(requestDeviceQuery);
-
-            await _bluetoothNavigator.SetupNotifyAsync(_bluetoothDevice, _serviceId, _notifyCharacteristicId);
+            
+            await _bluetoothDevice.SetupNotifyAsync(_serviceId, _notifyCharacteristicId);
 
             _bluetoothDevice.Notification += NotificationRecieved;
         }

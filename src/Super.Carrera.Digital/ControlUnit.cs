@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Timers;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace Super.Carrera.Digital
 {
@@ -7,6 +9,9 @@ namespace Super.Carrera.Digital
     {
         private readonly byte[] StartCommand = "T2";
         private readonly byte[] ResetCommand = "=10";
+        private readonly byte[] PollCommand = "?";
+
+        private readonly PeriodicTimer _pollTimer;
 
         private readonly IControlUnitAdapter _adapter;
         private readonly IControlUnitNotificationHandler _notificationHandler;
@@ -19,20 +24,37 @@ namespace Super.Carrera.Digital
 
             _adapter = adapter;
             _adapter.OnNotification(_notificationHandler.HandleNotification);
+
+            _pollTimer = new PeriodicTimer(TimeSpan.FromMilliseconds(200));
         }
 
         public async Task ConnectAsync()
-            => await _adapter.ConnectAsync();
+        {
+            await _adapter.ConnectAsync();
+
+            async Task StartTimer()
+            {
+                using (_pollTimer)
+                {
+                    while (await _pollTimer.WaitForNextTickAsync())
+                    {
+                        await _adapter.SendAsync(PollCommand);
+                    }
+                }
+            }
+
+            _ = StartTimer();
+        }
 
         public void Map<TNotification>(Action<TNotification> notificationDelegate)
             => _notificationHandler.Map(notificationDelegate);
 
-        public async Task StartAsync() 
-            => await _adapter.SendAsync(StartCommand);
+        public async Task StartAsync()
+        {
+            await _adapter.SendAsync(StartCommand);
+        }
 
         public async Task ResetAsync()
             => await _adapter.SendAsync(ResetCommand);
-
-
     }
 }
