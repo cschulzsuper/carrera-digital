@@ -1,0 +1,60 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32505.426
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "carrera", "carrera", "{4266FD4B-99E5-4043-8BD0-FD387D342CB6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "app", "app", "{3F998D9D-5DBD-4213-8349-1392BA95486E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarreraDigitalApp.Client", "app\CarreraDigitalApp.Client\CarreraDigitalApp.Client.csproj", "{3AF29994-7C56-4A2E-A305-5829E021A8C0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarreraDigitalApp.Host", "app\CarreraDigitalApp.Host\CarreraDigitalApp.Host.csproj", "{0B0CAF7E-8C8C-4546-AC3E-717423A6B0DA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarreraDigital", "carrera\CarreraDigital\CarreraDigital.csproj", "{028A9FD6-47F1-43DA-BD95-EC70A150E678}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarreraDigital.Blazm.Bluetooth", "carrera\CarreraDigital.Blazm.Bluetooth\CarreraDigital.Blazm.Bluetooth.csproj", "{35ADE075-42F6-46C4-A5AB-584F734FEDDA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarreraDigital.Contract", "carrera\CarreraDigital.Contract\CarreraDigital.Contract.csproj", "{609BB18A-60ED-4B04-B883-EC649BFAC378}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3AF29994-7C56-4A2E-A305-5829E021A8C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AF29994-7C56-4A2E-A305-5829E021A8C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AF29994-7C56-4A2E-A305-5829E021A8C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AF29994-7C56-4A2E-A305-5829E021A8C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B0CAF7E-8C8C-4546-AC3E-717423A6B0DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B0CAF7E-8C8C-4546-AC3E-717423A6B0DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B0CAF7E-8C8C-4546-AC3E-717423A6B0DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B0CAF7E-8C8C-4546-AC3E-717423A6B0DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{028A9FD6-47F1-43DA-BD95-EC70A150E678}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{028A9FD6-47F1-43DA-BD95-EC70A150E678}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{028A9FD6-47F1-43DA-BD95-EC70A150E678}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{028A9FD6-47F1-43DA-BD95-EC70A150E678}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35ADE075-42F6-46C4-A5AB-584F734FEDDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35ADE075-42F6-46C4-A5AB-584F734FEDDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35ADE075-42F6-46C4-A5AB-584F734FEDDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35ADE075-42F6-46C4-A5AB-584F734FEDDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{609BB18A-60ED-4B04-B883-EC649BFAC378}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{609BB18A-60ED-4B04-B883-EC649BFAC378}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{609BB18A-60ED-4B04-B883-EC649BFAC378}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{609BB18A-60ED-4B04-B883-EC649BFAC378}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3AF29994-7C56-4A2E-A305-5829E021A8C0} = {3F998D9D-5DBD-4213-8349-1392BA95486E}
+		{0B0CAF7E-8C8C-4546-AC3E-717423A6B0DA} = {3F998D9D-5DBD-4213-8349-1392BA95486E}
+		{028A9FD6-47F1-43DA-BD95-EC70A150E678} = {4266FD4B-99E5-4043-8BD0-FD387D342CB6}
+		{35ADE075-42F6-46C4-A5AB-584F734FEDDA} = {4266FD4B-99E5-4043-8BD0-FD387D342CB6}
+		{609BB18A-60ED-4B04-B883-EC649BFAC378} = {4266FD4B-99E5-4043-8BD0-FD387D342CB6}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1DDA6552-7879-4894-9036-5CC4A98CB1E4}
+	EndGlobalSection
+EndGlobal

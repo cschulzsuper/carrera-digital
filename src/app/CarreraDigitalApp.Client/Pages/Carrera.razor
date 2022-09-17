@@ -1,0 +1,99 @@
+﻿@page "/carrera"
+
+@inject ControlUnit ControlUnit;
+
+<PageTitle>Counter</PageTitle>
+
+<h1>Carrera</h1>
+
+<button class="btn btn-primary" @onclick="StartAsync">Start</button>
+<button class="btn btn-secondary" @onclick="ResetAsync">Reset</button>
+
+<hr/>
+
+@if (_timestampQuery != null)
+{
+    <QuickGrid Items="@_timestampQuery">
+        <PropertyColumn Property="@(c => c.Value.Driver)" Title="Driver" Sortable="true" Align="Align.Left" />
+        <PropertyColumn Property="@(c => c.Value.LapCounter)" Title="#Laps" Sortable="true" IsDefaultSort="SortDirection.Descending" Align="Align.Right" />
+        <PropertyColumn Property="@(c => c.Value.LastLapTime)" Format="g" Title="Last lap" Sortable="true" Align="Align.Right" />
+        <PropertyColumn Property="@(c => c.Value.FastestLapTime)" Format="g" Title="Fastest lap" Sortable="true" Align="Align.Right" />
+    </QuickGrid>
+}
+
+@code {
+
+    private IQueryable<KeyValuePair<byte, ControllerData>>? _timestampQuery;
+    private IDictionary<byte, ControllerData> _timestamps = new Dictionary<byte, ControllerData>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        ControlUnit.Map<ControlUnitTimer>(controlUnitTimer =>
+        {
+            var controllerData = _timestamps.ContainsKey(controlUnitTimer.Controller)
+                ? _timestamps[controlUnitTimer.Controller]
+                : new ControllerData { Driver = $"Controller {controlUnitTimer.Controller}"};
+
+            controllerData.SetTimestamp(controlUnitTimer.Timestamp);
+
+            _timestamps[controlUnitTimer.Controller] = controllerData;
+            _timestampQuery = _timestamps.AsQueryable();
+
+            StateHasChanged();
+        });
+
+        await ControlUnit.ConnectAsync();
+    }
+
+    private async Task StartAsync()
+    {
+        await ControlUnit.StartAsync();
+
+        _timestamps.Clear();
+        _timestampQuery = _timestamps.AsQueryable();
+
+        StateHasChanged();
+    }
+
+    private async Task ResetAsync()
+    {
+        await ControlUnit.ResetAsync();
+
+        _timestamps.Clear();
+        _timestampQuery = _timestamps.AsQueryable();
+
+        StateHasChanged();
+    }
+
+    public class ControllerData
+    {
+        private uint _lastTimestamp = 0;
+
+        private uint _currentTimestamp = 0;
+
+        public uint LapCounter { get; private set; } = 0;
+
+        public TimeSpan LastLapTime { get; private set; } = TimeSpan.Zero;
+
+        public TimeSpan FastestLapTime { get; private set; } = TimeSpan.Zero;
+
+        public required string Driver { get; init; }
+
+        public void SetTimestamp(uint timestamp)
+        {
+            LapCounter++;
+
+            _lastTimestamp = _currentTimestamp;
+            _currentTimestamp = timestamp;
+
+            LastLapTime = _lastTimestamp == 0
+                ? TimeSpan.Zero 
+                : TimeSpan.FromMilliseconds(_currentTimestamp - _lastTimestamp);
+
+            FastestLapTime = FastestLapTime > LastLapTime ||
+                             FastestLapTime == TimeSpan.Zero
+                ? LastLapTime
+                : FastestLapTime;
+        }
+    }
+}
