@@ -12,7 +12,7 @@ Apart from the self written code, it uses the following components:
 
 The following pages and repositories served as resources to understand the Carrera Digital Protocol:
 
-* [Lap counter protocol](http://slotbaer.de/carrera-digital-124-132/9-cu-daten-protokoll.html) by Slotbaer (german)
+* [Lap counter protocol](http://slotbaer.de/carrera-digital-124-132/10-cu-rundenzaehler-protokoll.html) by Slotbaer (german)
 * [Python carreralib](https://github.com/tkem/carreralib/tree/master/carreralib) by [tkem](https://github.com/tkem) 
 
 Give it try, if you own a Carrera Digital slot car track!
