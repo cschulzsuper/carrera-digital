@@ -1,0 +1,60 @@
+﻿@page "/carrera"
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using System.Diagnostics
+@inject ControlUnit ControlUnit;
+
+<PageTitle>Counter</PageTitle>
+
+<h1>Carrera</h1>
+
+@if (_timestampQuery != null)
+{
+    <QuickGrid Items="@_timestampQuery">
+        <PropertyColumn Property="@(c => $"Controller {c.Key}")" Sortable="true" Align="Align.Left"/>
+        <PropertyColumn Property="@(c => $"{c.Value.LastLap:g}")" Sortable="true" Align="Align.Right" />
+    </QuickGrid>
+}
+
+@code {
+
+    private IQueryable<KeyValuePair<byte, ControllerData>>? _timestampQuery;
+    private IDictionary<byte, ControllerData> _timestamps = new Dictionary<byte, ControllerData>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        ControlUnit.Map<ControlUnitStatus>(_ => { return; });
+        ControlUnit.Map<ControlUnitTimer>(controlUnitTimer =>
+        {
+            var controllerData = _timestamps.ContainsKey(controlUnitTimer.Controller)
+                ? _timestamps[controlUnitTimer.Controller]
+                : new ControllerData();
+
+            controllerData.LastTimestamp = controllerData.CurrentTimestamp;
+            controllerData.CurrentTimestamp = controlUnitTimer.Timestamp;
+
+            Console.WriteLine(controlUnitTimer.Timestamp);
+
+            _timestamps[controlUnitTimer.Controller] = controllerData;
+
+            _timestampQuery = _timestamps.AsQueryable();
+
+            StateHasChanged();
+        });
+
+        await ControlUnit.ConnectAsync();
+    }
+
+    private async Task StartAsync()
+        => await ControlUnit.StartAsync();
+
+    public class ControllerData
+    {
+        public uint LastTimestamp { get; set; } = 0;
+
+        public uint CurrentTimestamp { get; set; } = 0;
+
+        public TimeSpan LastLap 
+            => TimeSpan.FromMilliseconds(CurrentTimestamp - LastTimestamp);
+    }
+
+}

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Timers;
 using System.Threading.Tasks;
 using System.Threading;
@@ -7,9 +8,9 @@ namespace Super.Carrera.Digital
 {
     public class ControlUnit
     {
-        private readonly byte[] StartCommand = "T2";
-        private readonly byte[] ResetCommand = "=10";
-        private readonly byte[] PollCommand = "?";
+        private readonly byte[] StartCommand = Encoding.UTF8.GetBytes("T2");
+        private readonly byte[] ResetCommand = Encoding.UTF8.GetBytes("=10");
+        private readonly byte[] PollCommand = Encoding.UTF8.GetBytes("?");
 
         private readonly PeriodicTimer _pollTimer;
 

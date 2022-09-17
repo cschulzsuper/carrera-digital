@@ -7,8 +7,6 @@ namespace Super.Carrera.Digital.ProtocolConverters
     {
         public override ControlUnitTimer Read(IControlUnitProtocolReader reader)
         {
-            reader.ReadByte();
-
             return new ControlUnitTimer(
                 reader.ReadByte(),
                 reader.ReadUInt32(),

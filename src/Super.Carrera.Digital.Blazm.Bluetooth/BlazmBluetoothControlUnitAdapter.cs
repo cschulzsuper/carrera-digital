@@ -33,16 +33,22 @@ namespace Super.Carrera.Digital.Blazm.Bluetooth
             
             await _bluetoothDevice.SetupNotifyAsync(_serviceId, _notifyCharacteristicId);
 
-            _bluetoothDevice.Notification += NotificationRecieved;
+            _bluetoothDevice.Notification += NotificationReceived;
         }
 
-        private void NotificationRecieved(object? sender, CharacteristicEventArgs e)
-            => _bluetoothNotificationHandler?.Invoke(e.Value);
+        private void NotificationReceived(object? sender, CharacteristicEventArgs e)
+        {
+            _bluetoothNotificationHandler?.Invoke(e.Value);
+        }
 
         public void OnNotification(Action<byte[]> notificationHandler)
-            => _bluetoothNotificationHandler = notificationHandler;
+        {
+            _bluetoothNotificationHandler = notificationHandler;
+        }
 
         public async Task SendAsync(byte[] startCommand)
-            => await (_bluetoothDevice?.WriteValueAsync(_serviceId, _senderCharacteristicId, startCommand) ?? Task.CompletedTask);
+        {
+            await (_bluetoothDevice?.WriteValueAsync(_serviceId, _senderCharacteristicId, startCommand) ?? Task.CompletedTask);
+        }
     }
 }
