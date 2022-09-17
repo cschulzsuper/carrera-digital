@@ -10,16 +10,16 @@ namespace Super.Carrera.Digital
         private record ControlUnitNotificationDelegates(Delegate Handler, Delegate Deserializer);
 
         private readonly IControlUnitProtocolSerializer _protocolSerializer;
-        //private readonly IControlUnitProtocolValidator _protocolValidator;
+        private readonly IControlUnitProtocolValidator _protocolValidator;
 
         private readonly IDictionary<int, ControlUnitNotificationDelegates> _notificationDelegatesMappings;
 
         public ControlUnitNotificationHandler(
-            IControlUnitProtocolSerializer protocolSerializer/*,
-            IControlUnitProtocolValidator protocolValidator*/)
+            IControlUnitProtocolSerializer protocolSerializer,
+            IControlUnitProtocolValidator protocolValidator)
         {
             _protocolSerializer = protocolSerializer;
-            //_protocolValidator = protocolValidator;
+            _protocolValidator = protocolValidator;
 
             _notificationDelegatesMappings = new Dictionary<int, ControlUnitNotificationDelegates>();
         }
@@ -27,20 +27,22 @@ namespace Super.Carrera.Digital
         public void Map<TNotification>(Action<TNotification> notificationDelegate)
         {
             var notificationType = typeof(TNotification);
-            var notificationIdentification = notificationType
-                .GetCustomAttribute<ControlUnitNotificationAttribute>()!.Identification;
+            var notificationIdentifications = notificationType
+                .GetCustomAttributes<ControlUnitObjectIdentifierAttribute>();
 
-            _notificationDelegatesMappings[notificationIdentification]
-                = new ControlUnitNotificationDelegates(
-                    (TNotification notification) => notificationDelegate(notification),
-                    (byte[] bytes) => _protocolSerializer.Deserialize(bytes, notificationType));
+            foreach (var notificationIdentification in notificationIdentifications)
+            {
+                _notificationDelegatesMappings[notificationIdentification.Identification]
+                    = new ControlUnitNotificationDelegates(notificationDelegate, 
+                        (byte[] bytes) => _protocolSerializer.Deserialize(bytes, notificationType));
+            }
         }
 
         public void HandleNotification(byte[] bytes)
         {
-            //_protocolValidator.EnsureValidity(bytes);
+            _protocolValidator.EnsureValidity(bytes);
 
-            var notificationDelegates = FindNotificationDelegatesOrDefault(bytes)!;
+            var notificationDelegates = FindNotificationDelegatesOrDefault(bytes);
             if (notificationDelegates == null)
             {
                 return;
@@ -52,30 +54,16 @@ namespace Super.Carrera.Digital
 
         private ControlUnitNotificationDelegates? FindNotificationDelegatesOrDefault(byte[] bytes)
         {
-            if (bytes.Length < 2)
+            if (bytes.Length < 1)
             {
                 return null;
             }
 
-            var oneByteIdentification =
-                (bytes[0] << 0);
-
-            var hasOneByteIdentification = _notificationDelegatesMappings.TryGetValue(oneByteIdentification, out var notificationDelegates);
-            if (hasOneByteIdentification)
-            {
-                return notificationDelegates;
-            }
-
-            var zeroByteIdentification = 0;
-
-            var hasZeroByteIdentification = _notificationDelegatesMappings.TryGetValue(zeroByteIdentification, out notificationDelegates);
-            if (hasZeroByteIdentification)
-            {
-                return notificationDelegates;
-            }
-
-            return null;
+            var notificationDelegateFound = _notificationDelegatesMappings.TryGetValue(bytes[0], out var notificationDelegates);
+           
+            return notificationDelegateFound
+                ? notificationDelegates 
+                : null;
         }
-
     }
 }

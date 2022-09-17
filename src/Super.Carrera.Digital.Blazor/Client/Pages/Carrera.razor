@@ -22,7 +22,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        ControlUnit.Map<ControlUnitStatus>(_ => { return; });
         ControlUnit.Map<ControlUnitTimer>(controlUnitTimer =>
         {
             var controllerData = _timestamps.ContainsKey(controlUnitTimer.Controller)

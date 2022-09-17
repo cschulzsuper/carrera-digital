@@ -15,13 +15,16 @@ namespace Super.Carrera.Digital
         public static IServiceCollection AddCarreraControlUnit<TAdapter>(this IServiceCollection services)
             where TAdapter : class, IControlUnitAdapter
         {
-            services.AddScoped<IControlUnitAdapter, TAdapter>();
-            services.AddScoped<ControlUnit>();
-            services.AddScoped<IControlUnitNotificationHandler, ControlUnitNotificationHandler>();
-            services.AddScoped<IControlUnitProtocolSerializer, ControlUnitProtocolSerializer>();
 
-            services.AddScoped<ControlUnitProtocolConverter<ControlUnitStatus>, ControlUnitProtocolConverterStatus>();
-            services.AddScoped<ControlUnitProtocolConverter<ControlUnitTimer>, ControlUnitProtocolConverterTimer>();
+            services.AddScoped<ControlUnit>();
+            services.AddScoped<IControlUnitAdapter, TAdapter>();
+            services.AddScoped<IControlUnitNotificationHandler, ControlUnitNotificationHandler>();
+           
+            services.AddSingleton<IControlUnitProtocolSerializer, ControlUnitProtocolSerializer>();
+            services.AddSingleton<IControlUnitProtocolValidator, ControlUnitProtocolValidator>();
+
+            services.AddSingleton<ControlUnitProtocolConverter<ControlUnitStatus>, ControlUnitProtocolConverterStatus>();
+            services.AddSingleton<ControlUnitProtocolConverter<ControlUnitTimer>, ControlUnitProtocolConverterTimer>();
 
             return services;
         }
